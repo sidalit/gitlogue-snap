@@ -1,0 +1,60 @@
+name: gitlogue
+base: core26
+version: '0.12.2'
+title: gitlogue
+summary: Replay Git commits as animated typing in your terminal
+description: |
+  gitlogue replays the history of a Git repository as a cinematic terminal
+  animation. Each commit is typed out with syntax highlighting, a file tree
+  and commit details, which makes it suitable for demos, screensavers and
+  reviewing how a change was written.
+
+  **Examples**
+
+     gitlogue
+     gitlogue --commit HEAD~5 --speed 15
+     gitlogue --author "jane" --theme nord
+
+  **File access**
+
+  gitlogue can replay repositories in your home directory. To also use
+  repositories on USB drives and other removable media (/media, /mnt), run:
+
+     sudo snap connect gitlogue:removable-media
+license: ISC
+grade: stable
+confinement: strict
+website: https://github.com/unhappychoice/gitlogue
+source-code:
+  - https://github.com/unhappychoice/gitlogue
+  - https://github.com/sidalit/gitlogue-snap
+issues:
+  - https://github.com/unhappychoice/gitlogue/issues
+  - https://github.com/sidalit/gitlogue-snap/issues
+contact: https://github.com/sidalit/gitlogue-snap/issues
+
+platforms:
+  amd64:
+  arm64:
+
+apps:
+  gitlogue:
+    command: bin/gitlogue
+    plugs:
+      - home
+      - removable-media
+
+parts:
+  gitlogue:
+    plugin: rust
+    source: https://github.com/unhappychoice/gitlogue.git
+    source-tag: v$SNAPCRAFT_PROJECT_VERSION
+    source-depth: 1
+    rust-channel: stable
+    build-packages:
+      - build-essential
+      # git2 builds its vendored OpenSSL and libgit2 from source.
+      - perl
+    override-build: |
+      craftctl default
+      install -Dm644 LICENSE LICENSE-THIRD-PARTY -t "$CRAFT_PART_INSTALL/usr/share/doc/gitlogue"

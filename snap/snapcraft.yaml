@@ -40,6 +40,8 @@ platforms:
 apps:
   gitlogue:
     command: bin/gitlogue
+    environment:
+      XDG_CONFIG_HOME: $SNAP_USER_DATA/.config
     plugs:
       - home
       - removable-media
